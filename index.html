@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>FlowMaster — AI-помощник продуктивности</title>
+    <!-- Google Fonts + Font Awesome + AOS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            scroll-behavior: smooth;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Кнопки */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #2563eb;
+            color: white;
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: 40px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+        }
+        .btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #2563eb;
+            color: #2563eb;
+            box-shadow: none;
+        }
+        .btn-outline:hover {
+            background: #2563eb;
+            color: white;
+        }
+        .hero .btn-outline {
+            border-color: white;
+            color: white;
+            background: rgba(255,255,255,0.1);
+        }
+        .hero .btn-outline:hover {
+            background: white;
+            color: #2563eb;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(37, 99, 235, 0.85)), url('https://placehold.co/1920x1080/1e293b/white?text=AI+Productivity+Dashboard') center/cover no-repeat;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+        }
+        .hero-content {
+            max-width: 700px;
+            color: white;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Секции */
+        section {
+            padding: 80px 0;
+        }
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 48px;
+            color: #0f172a;
+        }
+        .section-sub {
+            text-align: center;
+            max-width: 700px;
+            margin: -30px auto 50px;
+            color: #334155;
+            font-size: 1.1rem;
+        }
+
+        /* Карточки функционала */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 30px;
+        }
+        .feature-card {
+            background: white;
+            padding: 32px 24px;
+            border-radius: 28px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 35px -10px rgba(37, 99, 235, 0.15);
+            border-color: #93c5fd;
+        }
+        .feature-icon {
+            font-size: 2.6rem;
+            color: #2563eb;
+            margin-bottom: 20px;
+        }
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            color: #0f172a;
+        }
+
+        /* Путь от А до Б */
+        .journey {
+            background: #eff6ff;
+        }
+        .journey-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        .journey-item {
+            flex: 1;
+            min-width: 220px;
+            background: white;
+            padding: 28px;
+            border-radius: 28px;
+            text-align: center;
+            transition: 0.2s;
+        }
+        .journey-item i {
+            font-size: 2rem;
+            color: #2563eb;
+            margin-bottom: 15px;
+        }
+
+        /* Преимущества */
+        .advantages {
+            background: #ffffff;
+        }
+        .adv-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        .adv-item {
+            flex: 1;
+            min-width: 240px;
+            background: #f1f5f9;
+            padding: 28px;
+            border-radius: 28px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .adv-item:hover {
+            background: #e6edf8;
+        }
+
+        /* Отзывы */
+        .reviews {
+            background: #f8fafc;
+        }
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .review {
+            background: white;
+            padding: 28px;
+            border-radius: 32px;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+        }
+        .review:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 24px rgba(37, 99, 235, 0.08);
+        }
+        .review p {
+            font-style: italic;
+            margin-bottom: 16px;
+            color: #1e293b;
+        }
+        .review-author {
+            font-weight: 700;
+            color: #2563eb;
+        }
+        .stars {
+            color: #fbbf24;
+            margin-bottom: 12px;
+        }
+
+        /* FAQ */
+        .faq-item {
+            background: white;
+            border-radius: 24px;
+            margin-bottom: 16px;
+            padding: 0 24px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+        }
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #0f172a;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+            color: #334155;
+            padding-right: 20px;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 280px;
+            padding-bottom: 20px;
+        }
+
+        /* Цена */
+        .pricing {
+            background: linear-gradient(120deg, #eef2ff 0%, #ffffff 100%);
+            text-align: center;
+        }
+        .price-card {
+            max-width: 520px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 48px;
+            padding: 48px 32px;
+            box-shadow: 0 25px 40px -12px rgba(0,0,0,0.15);
+        }
+        .price {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #2563eb;
+        }
+        .price small {
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        /* Футер + стрелка */
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 48px 0 24px;
+            text-align: center;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+        }
+        .footer-links a:hover {
+            color: #60a5fa;
+        }
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2563eb;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 99;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .scroll-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .scroll-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-3px);
+        }
+
+        /* Навигация */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            padding: 16px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: #0f172a;
+        }
+        .logo i {
+            color: #2563eb;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+        .nav-menu a {
+            text-decoration: none;
+            color: #1e293b;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .nav-menu a:hover {
+            color: #2563eb;
+        }
+        .menu-icon {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #0f172a;
+        }
+        @media (max-width: 768px) {
+            .menu-icon {
+                display: block;
+            }
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background: white;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 30px 0;
+                gap: 24px;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+            .nav-menu.active {
+                left: 0;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .btn {
+                padding: 10px 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container nav-container">
+        <div class="logo"><i class="fas fa-robot"></i> FlowMaster</div>
+        <div class="menu-icon" id="menuIcon">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="#about">О нас</a></li>
+            <li><a href="#features">Функции</a></li>
+            <li><a href="#advantages">Преимущества</a></li>
+            <li><a href="#reviews">Отзывы</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#pricing">Цена</a></li>
+            <li><a href="app.html" target="_blank">Приложение</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <div class="container">
+        <div class="hero-content" data-aos="fade-up">
+            <h1>Работай умнее,<br>а не тяжелее</h1>
+            <p>FlowMaster — AI-помощник, который организует задачи, расставляет приоритеты и помогает командам избегать выгорания. Канбан, Pomodoro, GTD и аналитика в одном месте.</p>
+            <div class="hero-buttons">
+                <a href="#about" class="btn" id="learnMoreBtn">Узнать больше <i class="fas fa-arrow-right"></i></a>
+                <a href="app.html" class="btn btn-outline" target="_blank">Открыть приложение <i class="fas fa-external-link-alt"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Краткое описание -->
+<section id="about">
+    <div class="container">
+        <div class="section-title" data-aos="fade-up">Ваш AI-координатор продуктивности</div>
+        <div class="section-sub" data-aos="fade-up">FlowMaster анализирует вашу рабочую нагрузку, личный стиль и здоровье, чтобы предложить оптимальный режим работы без перегрузок.</div>
+        <div data-aos="fade-up" style="text-align: center; margin-top: 20px;">
+            <i class="fas fa-chalkboard-user" style="font-size: 3rem; color:#2563eb;"></i>
+            <p style="max-width:600px; margin:20px auto;">Подключите календари, трекеры задач и получите AI-подсказки по приоритетам, оценке времени и борьбе с прокрастинацией.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Путь от точки А к точке Б -->
+<section class="journey">
+    <div class="container">
+        <div class="section-title" data-aos="fade-up">От хаоса к контролю</div>
+        <div class="journey-grid">
+            <div class="journey-item" data-aos="zoom-in">
+                <i class="fas fa-bomb"></i>
+                <h3>Бесконечные дедлайны</h3>
+                <p>→ Предсказуемые сроки и спокойствие</p>
+            </div>
+            <div class="journey-item" data-aos="zoom-in" data-aos-delay="100">
+                <i class="fas fa-people-arrows"></i>
+                <h3>Разрозненные команды</h3>
+                <p>→ Единая канбан-доска и прозрачность</p>
+            </div>
+            <div class="journey-item" data-aos="zoom-in" data-aos-delay="200">
+                <i class="fas fa-fire"></i>
+                <h3>Выгорание и усталость</h3>
+                <p>→ Режим «фокус» + аналитика нагрузки</p>
+            </div>
+            <div class="journey-item" data-aos="zoom-in" data-aos-delay="300">
+                <i class="fas fa-brain"></i>
+                <h3>Рассеянное внимание (СДВГ)</h3>
+                <p>→ Адаптивный интерфейс и таймеры</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Карточки функционала -->
+<section id="features">
+    <div class="container">
+        <div class="section-title" data-aos="fade-up">Ключевые возможности</div>
+        <div class="features-grid">
+            <div class="feature-card" data-aos="flip-left">
+                <div class="feature-icon"><i class="fas fa-magic"></i></div>
+                <h3>AI-приоритизация</h3>
+                <p>Матрица Эйзенхауэра + машинное обучение. Задачи сами поднимаются наверх, когда нужны.</p>
+            </div>
+            <div class="feature-card" data-aos="flip-left" data-aos-delay="100">
+                <div class="feature-icon"><i class="fas fa-chart-simple"></i></div>
+                <h3>Аналитика выгорания</h3>
+                <p>Отслеживание рабочей нагрузки и рекомендации по перерывам — бережём вашу психику.</p>
+            </div>
+            <div class="feature-card" data-aos="flip-left" data-aos-delay="200">
+                <div class="feature-icon"><i class="fas fa-puzzle-piece"></i></div>
+                <h3>Интеграции</h3>
+                <p>Slack, GitHub, Google Calendar, Notion — всё в одном дашборде.</p>
+            </div>
+            <div class="feature-card" data-aos="flip-left" data-aos-delay="300">
+                <div class="feature-icon"><i class="fas fa-universal-access"></i></div>
+                <h3>Адаптивный интерфейс</h3>
+                <p>Учёт СДВГ, дислексии и других особенностей — настраиваем шрифты, контраст и напоминания.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Преимущества и отличия от аналогов -->
+<section id="advantages" class="advantages">
+    <div class="container">
+        <div class="section-title" data-aos="fade-up">Почему FlowMaster?</div>
+        <div class="adv-list">
+            <div class="adv-item" data-aos="fade-right">
+                <i class="fas fa-brain fa-2x" style="color:#2563eb;"></i>
+                <h3>AI без сложных настроек</h3>
+                <p>Просто опишите проект — AI разобьёт на подзадачи и предложит сроки. Аналоги требуют ручного ввода.</p>
+            </div>
+            <div class="adv-item" data-aos="fade-right" data-aos-delay="100">
+                <i class="fas fa-heartbeat fa-2x" style="color:#2563eb;"></i>
+                <h3>Забота о здоровье</h3>
+                <p>Первый трекер продуктивности, который учитывает ментальное и физическое состояние (тревожность, СДВГ, зрение).</p>
+            </div>
+            <div class="adv-item" data-aos="fade-right" data-aos-delay="200">
+                <i class="fas fa-chart-line fa-2x" style="color:#2563eb;"></i>
+                <h3>Реальные результаты</h3>
+                <p>Команды сокращают время на планирование на 40% и повышают выполнение дедлайнов до 95%.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Отзывы -->
+<section id="reviews" class="reviews">
+    <div class="container">
+        <div class="section-title" data-aos="fade-up">Что говорят пользователи</div>
+        <div class="reviews-grid">
+            <div class="review" data-aos="fade-up">
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p>«FlowMaster спас наш стартап от хаоса. AI сам расставил приоритеты, и мы выпустили продукт на 2 недели раньше срока!»</p>
+                <div class="review-author">— Артур, CEO DevLaunch</div>
+            </div>
+            <div class="review" data-aos="fade-up" data-aos-delay="100">
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p>«У меня СДВГ, и обычные таск-трекеры не работали. FlowMaster адаптировал интерфейс, убрал отвлекающие элементы — теперь я справляюсь с делами.»</p>
+                <div class="review-author">— Екатерина, дизайнер</div>
+            </div>
+            <div class="review" data-aos="fade-up" data-aos-delay="200">
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                <p>«Интеграция с GitHub и Notion — бомба. Команда из 5 человек наконец-то синхронизировалась, забыли про бесконечные созвоны.»</p>
+                <div class="review-author">— Михаил, tech-lead</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+    <div class="container">
+        <div class="section-title" data-aos="fade-up">Часто задаваемые вопросы</div>
+        <div class="faq-list" data-aos="fade-up">
+            <div class="faq-item">
+                <div class="faq-question">Могу ли я использовать FlowMaster один (без команды)? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Да, режим «Соло» разработан для фрилансеров и предпринимателей. AI поможет вам организовать личные задачи, тайм-менеджмент и даже порекомендует перерывы, чтобы избежать выгорания.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Как приложение учитывает ограничения по здоровью? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Вы можете указать СДВГ, тревожность, мигрени, проблемы со зрением и т.д. FlowMaster адаптирует интерфейс (цвета, шрифты, частота напоминаний) и предложит техники работы (Pomodoro, тайм-боксинг) с учётом ваших особенностей.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Безопасно ли передавать данные о проектах? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Мы используем сквозное шифрование. Ваши данные не продаются и не используются для обучения публичных моделей. Есть локальный режим работы (без облака).</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Есть ли бесплатный тариф? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Да, базовый тариф навсегда бесплатен: до 3 проектов, базовый AI-ассистент, интеграция с календарём. Премиум (599 ₽/мес) снимает лимиты и даёт расширенную аналитику.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Блок с ценой -->
+<section id="pricing" class="pricing">
+    <div class="container">
+        <div class="price-card" data-aos="flip-up">
+            <h2>Премиум-доступ</h2>
+            <div class="price">599 ₽ <small>/ месяц</small></div>
+            <p style="margin: 20px 0;">Безлимит проектов, AI-планирование спринтов, расширенная аналитика выгорания, приоритетная поддержка. Первые 14 дней бесплатно.</p>
+            <a href="#" class="btn" id="payButton">Начать пробный период <i class="fas fa-rocket"></i></a>
+            <p style="font-size:0.8rem; margin-top:20px;">Отмена в любое время, без скрытых комиссий</p>
+        </div>
+    </div>
+</section>
+
+<!-- Футер -->
+<footer>
+    <div class="container">
+        <div class="footer-links">
+            <a href="#">О компании</a>
+            <a href="#">Политика конфиденциальности</a>
+            <a href="#">Поддержка</a>
+            <a href="app.html" target="_blank">Приложение</a>
+        </div>
+        <p>&copy; 2026 FlowMaster — AI для продуктивной и здоровой работы.</p>
+        <p style="margin-top: 10px;"><i class="fas fa-heart" style="color:#60a5fa;"></i> Работай в потоке, без перегрузок</p>
+    </div>
+</footer>
+
+<!-- Стрелка вверх -->
+<div class="scroll-top" id="scrollTopBtn">
+    <i class="fas fa-arrow-up"></i>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({ duration: 800, once: true, offset: 100 });
+
+    // Бургер-меню
+    const menuIcon = document.getElementById('menuIcon');
+    const navMenu = document.getElementById('navMenu');
+    menuIcon.addEventListener('click', () => navMenu.classList.toggle('active'));
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+        link.addEventListener('click', () => navMenu.classList.remove('active'));
+    });
+
+    // Плавный скролл для якорей
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            if (targetId === '') return;
+            const target = document.getElementById(targetId);
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+
+    // Стрелка вверх
+    const scrollBtn = document.getElementById('scrollTopBtn');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 400) scrollBtn.classList.add('show');
+        else scrollBtn.classList.remove('show');
+    });
+    scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // FAQ аккордеон
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+            faqItems.forEach(i => i.classList.remove('active'));
+            if (!isActive) item.classList.add('active');
+        });
+    });
+    if (faqItems.length) faqItems[0].classList.add('active');
+
+    // Кнопка оплаты (заглушка)
+    const payBtn = document.getElementById('payButton');
+    payBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('Демо-режим. Замените ссылку на реальную страницу оплаты.');
+    });
+</script>
+</body>
+</html>
